@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <link rel="stylesheet" href="../css/style.css"> -->
+  <title>Пример 18* - Календарь - Домашнее задание</title>
+  <style>
+    * {
+        font-family: 'Times New Roman', Times, serif
+    }
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 50px;
+        max-width: 85%;
+    }
+    div {
+        gap: 20px;
+    }
+    table, tr, th, td {
+        border-collapse: collapse;
+    }
+    caption {
+        background-color: antiquewhite;
+        border-bottom: none;
+        padding: 10px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    th,td, caption {
+        border: 1px solid #5b5b5b;
+    }
+    th {
+        width: 35px;
+        background-color: antiquewhite;
+        font-weight: normal;
+    }
+    td {
+        text-align: center;
+        font-size: 18px;
+    }
+    tr {
+        height: 35px;
+    }
+  </style>
+</head>
+
+<body id="body">
+
+  <div class="container" id="container"></div>
+
+  <script>
+
+    function createCalendar(elem, year, month) {
+      elem = document.getElementById(elem)
+      let newMonth = month - 1
+      let newDate = new Date(year, newMonth)
+
+      let table = `
+      <div>
+        <table>
+            <caption>${month} / ${year}</caption>
+            <tr>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+            <th>Sun</th>
+            </tr>
+            <tr>
+      `;
+
+      for(i = 0; i < getDay(newDate); i++) {
+        table += '<td></td>'
+      }
+
+      while(newDate.getMonth() == newMonth) {
+        table += '<td>' + newDate.getDate() + '</td>'
+            if(getDay(newDate) == 6) {
+              table += '</tr><tr>'
+            }
+            newDate.setDate(newDate.getDate() + 1)
+      }
+
+      if(getDay(newDate) != 0) {
+        for(i = getDay(newDate); i < 7; i++) {
+          table += '<td></td>'
+        }
+      }
+
+      table += '</tr></table></div>'
+      elem.innerHTML = table
+    }
+
+    function getDay(date) {
+      let newDateFromGlobalObject = new Date(date);
+      let day = newDateFromGlobalObject.getDay();
+      if(day == 0) {
+        day = 7
+      }
+      return day - 1
+    }
+
+    
+    function createWholeYearCalendar(year) {
+        
+        let container = document.getElementById('container')
+
+        for(j = 1; j <= 12; j++) {
+            let divId = `month_${j}`
+            let createDiv = `<div id='${divId}'></div>`
+            container.innerHTML += createDiv
+            createCalendar(divId, year, j)
+        }
+    }
+
+    createWholeYearCalendar(1993)
+    
+  </script>
+</body>
+
+</html>
